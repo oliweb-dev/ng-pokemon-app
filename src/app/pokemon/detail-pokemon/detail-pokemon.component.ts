@@ -18,8 +18,12 @@ export class DetailPokemonComponent implements OnInit {
 
       if (pokemonId) {
          //this.pokemon = this.pokemonList.find(p => p.id === +pokemonId);
-         this.pokemon = this.pokemonService.getPokemonById(+pokemonId);
+         this.pokemonService.getPokemonById(+pokemonId).subscribe(p => (this.pokemon = p));
       }
+   }
+
+   deletePokemon(pokemon: Pokemon) {
+      this.pokemonService.deletePokemonById(pokemon.id).subscribe(() => this.goToPokemonList());
    }
 
    goToPokemonList() {
