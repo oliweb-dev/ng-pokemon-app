@@ -24,6 +24,17 @@ export class PokemonService {
       );
    }
 
+   searchPokemonList(term: string): Observable<Pokemon[]> {
+      if (term.length < 2) {
+         return of([]);
+      }
+      return this.http.get<Pokemon[]>(`api/pokemons/?name=${term}`).pipe(
+         retry(2),
+         tap(pokemonList => this.log(pokemonList)),
+         catchError(error => this.handleError(error, []))
+      );
+   }
+
    addPokemon(pokemon: Pokemon): Observable<Pokemon> {
       const httpOptions = {
          headers: new HttpHeaders({'Content-Type': 'application/json'}),
@@ -62,18 +73,6 @@ export class PokemonService {
    }
 
    getPokemonTypeList(): string[] {
-      return [
-         'Plante',
-         'Feu',
-         'Eau',
-         'Insecte',
-         'Normal',
-         'Electrik',
-         'Poison',
-         'Fée',
-         'Vol',
-         'Combat',
-         'Psy',
-      ];
+      return ['Plante', 'Feu', 'Eau', 'Insecte', 'Normal', 'Electrik', 'Poison', 'Fée', 'Vol', 'Combat', 'Psy'];
    }
 }
